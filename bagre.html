@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bagre de Ouro — Seleção Brasileira 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #080808;
+      --surface:    #0F0F0F;
+      --surface2:   #141414;
+      --gold:       #B8942A;
+      --gold-light: #D4B96A;
+      --gold-pale:  #EDD98A;
+      --rule:       rgba(184,148,42,0.28);
+      --text:       #AFAFAF;
+      --text-dim:   #555;
+      --white:      #F0EBE0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+      /* grain texture via SVG data URI */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    /* ───────────────── ANNOUNCE BAR ───────────────── */
+    .announce {
+      border-bottom: 1px solid var(--rule);
+      border-top: 1px solid var(--rule);
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--surface);
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .announce::before,
+    .announce::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .announce::before {
+      left: 0;
+      background: linear-gradient(to right, var(--surface), transparent);
+    }
+
+    .announce::after {
+      right: 0;
+      background: linear-gradient(to left, var(--surface), transparent);
+    }
+
+    .announce-track {
+      display: inline-flex;
+      gap: 0;
+      animation: ticker 22s linear infinite;
+      will-change: transform;
+    }
+
+    .announce-track:hover {
+      animation-play-state: paused;
+    }
+
+    .announce-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      padding: 0 28px;
+    }
+
+    .announce-item span {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .announce-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ───────────────── HEADER ───────────────── */
+    header {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 40px 60px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .header-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .logo-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* ─ LOGO placeholder ─ */
+    .logo-slot {
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      gap: 6px;
+      position: relative;
+    }
+
+    .logo-slot svg {
+      opacity: 0.45;
+    }
+
+    .logo-slot span {
+      font-size: 9px;
+      opacity: 0.6;
+      line-height: 1.4;
+    }
+
+    .wordmark {
+      text-align: center;
+    }
+
+    .wordmark-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .wordmark-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 38px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      display: block;
+      line-height: 1;
+    }
+
+    /* ───────────────── HERO ───────────────── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 40px 80px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(48px, 8vw, 88px);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-pale);
+    }
+
+    .hero-body {
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      margin: 0 auto;
+    }
+
+    /* ───────────────── DISCLAIMER ───────────────── */
+    .disclaimer-wrap {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      background: var(--surface);
+    }
+
+    .disclaimer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px 40px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .disclaimer-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    .disclaimer-text {
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .disclaimer-text strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* ───────────────── WINNER SECTION ───────────────── */
+    .winner-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 96px 40px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.1;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .section-note {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-top: 14px;
+      text-transform: uppercase;
+    }
+
+    /* CARD */
+    .winner-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--rule);
+      background: var(--surface);
+    }
+
+    @media (max-width: 640px) {
+      .winner-layout { grid-template-columns: 1fr; }
+    }
+
+    /* photo side */
+    .card-photo-side {
+      position: relative;
+      aspect-ratio: 2/3;
+      background: var(--surface2);
+      overflow: hidden;
+    }
+
+    .card-photo-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* placeholder */
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--text-dim);
+    }
+
+    .photo-placeholder svg { opacity: 0.25; }
+
+    .photo-placeholder p {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      opacity: 0.6;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .card-photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--surface) 100%);
+      pointer-events: none;
+    }
+
+    /* info side */
+    .card-info-side {
+      padding: 52px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+      position: relative;
+    }
+
+    .card-edition {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .card-position-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+
+    .card-name span {
+      display: block;
+      font-size: 0.55em;
+      font-weight: 300;
+      color: var(--gold-pale);
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .card-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .card-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 16px;
+    }
+
+    .detail-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .detail-value {
+      font-size: 12px;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-align: right;
+    }
+
+    .award-seal {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .seal-line {
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .seal-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    /* ───────────────── NEXT SECTION ───────────────── */
+    .next-section {
+      border-top: 1px solid var(--rule);
+      background: var(--surface);
+    }
+
+    .next-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 96px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .next-inner { grid-template-columns: 1fr; gap: 48px; }
+      header { grid-template-columns: 1fr; }
+      .header-rule { display: none; }
+      .winner-layout { grid-template-columns: 1fr; }
+      .card-photo-overlay { display: none; }
+      .card-info-side { padding: 36px 28px; }
+      .disclaimer-inner { grid-template-columns: 1fr; gap: 8px; }
+      .disclaimer-mark { display: none; }
+    }
+
+    .next-text .section-eyebrow { margin-bottom: 14px; }
+
+    .next-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .next-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .next-body {
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 36px;
+      letter-spacing: 0.01em;
+    }
+
+    .next-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .meta-label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      width: 100px;
+      flex-shrink: 0;
+    }
+
+    .meta-value {
+      font-size: 13px;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+
+    .vote-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      border: 1px solid var(--rule);
+      background: transparent;
+      color: var(--text-dim);
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: not-allowed;
+      transition: all 0.2s;
+    }
+
+    .vote-btn-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-dim);
+    }
+
+    /* match photo */
+    .match-photo-slot {
+      aspect-ratio: 4/5;
+      border: 1px solid var(--rule);
+      background: var(--surface2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .match-photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .match-photo-slot p {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      opacity: 0.5;
+      text-align: center;
+      padding: 0 24px;
+      line-height: 1.6;
+    }
+
+    .match-photo-slot svg { opacity: 0.15; }
+
+    /* ───────────────── FOOTER ───────────────── */
+    footer {
+      border-top: 1px solid var(--rule);
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 300;
+    }
+
+    .footer-legal {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    /* ───────────────── IMAGENS ───────────────── */
+    .logo-img {
+      width: 108px;
+      height: 108px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+    }
+
+    .card-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+
+    .match-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ───────────────── FADE IN ───────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── ANNOUNCE TICKER ── -->
+  <div class="announce">
+    <div class="announce-track">
+      <!-- bloco A -->
+      <div class="announce-item"><span>Copa do Mundo 2026</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Seleção Brasileira</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Votação Popular</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>O Prêmio da Torcida</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Bagre de Ouro</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Brasil</span><span class="announce-dot"></span></div>
+      <!-- bloco B — cópia exata para loop contínuo -->
+      <div class="announce-item"><span>Copa do Mundo 2026</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Seleção Brasileira</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Votação Popular</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>O Prêmio da Torcida</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Bagre de Ouro</span><span class="announce-dot"></span></div>
+      <div class="announce-item"><span>Brasil</span><span class="announce-dot"></span></div>
+    </div>
+  </div>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="header-rule"></div>
+    <div class="logo-center">
+
+      <!-- ↓ LOGO: preencha o src com o caminho da sua imagem -->
+      <img src="InShot_20260614_205650167.png" alt="Bagre de Ouro" class="logo-img" />
+
+      <div class="wordmark">
+        <span class="wordmark-title">O Prêmio da Torcida</span>
+        <span class="wordmark-main">Bagre de Ouro</span>
+      </div>
+    </div>
+    <div class="header-rule"></div>
+  </header>
+
+  <!-- ── HERO ── -->
+  <div class="hero fade-in">
+    <p class="hero-eyebrow">Copa do Mundo 2026</p>
+    <h1 class="hero-title">A voz<br/>da <em>torcida</em></h1>
+    <p class="hero-body">
+      Cada partida revela mais do que o placar. O Bagre de Ouro é o espaço onde
+      a torcida brasileira avalia, opina e elege — com liberdade e respeito.
+    </p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <!-- ── DISCLAIMER ── -->
+  <div class="disclaimer-wrap">
+    <div class="disclaimer-inner">
+      <div class="disclaimer-mark">§</div>
+      <p class="disclaimer-text">
+        <strong>Nota editorial —</strong> O Bagre de Ouro não foi criado para constranger ou humilhar jogadores.
+        Trata-se de um canal de opinião pública, criado com bom humor e respeito pelo futebol.
+        Crítica faz parte do jogo. A torcida brasileira sempre teve voz — aqui, ela tem um palco.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── WINNER ── -->
+  <section class="winner-section">
+    <div class="section-header fade-in">
+      <p class="section-eyebrow">Primeira Edição — Rodada Inaugural</p>
+      <h2 class="section-title">O <em>primeiro</em> Bagre de Ouro</h2>
+      <p class="section-note">Eleito pela curadoria editorial · sem votação popular</p>
+    </div>
+
+    <div class="winner-layout fade-in">
+
+      <!-- FOTO -->
+      <div class="card-photo-side">
+        <!-- ↓ FOTO DO RAPHINHA: preencha o src com o caminho da sua imagem -->
+        <img src="000-32td9bk.webp" alt="Raphinha" class="card-photo-img" />
+        <div class="card-photo-overlay"></div>
+      </div>
+
+      <!-- INFO -->
+      <div class="card-info-side">
+        <div class="card-edition">Bagre de Ouro — Edição I · 2026</div>
+
+        <p class="card-position-label">Atacante</p>
+        <h3 class="card-name">
+          <span>Raphael Dias</span>
+          Raphinha
+        </h3>
+
+        <div class="card-details">
+          <div class="card-detail-row">
+            <span class="detail-label">Clube</span>
+            <span class="detail-value">FC Barcelona</span>
+          </div>
+          <div class="card-detail-row">
+            <span class="detail-label">Posição</span>
+            <span class="detail-value">Ala Direita</span>
+          </div>
+          <div class="card-detail-row">
+            <span class="detail-label">Número</span>
+            <span class="detail-value">11</span>
+          </div>
+          <div class="card-detail-row">
+            <span class="detail-label">Idade</span>
+            <span class="detail-value">28 anos</span>
+          </div>
+          <div class="card-detail-row">
+            <span class="detail-label">Edição</span>
+            <span class="detail-value">Copa do Mundo 2026 · R1</span>
+          </div>
+        </div>
+
+        <div class="award-seal">
+          <div class="seal-line"></div>
+          <span class="seal-text">Bagre de Ouro</span>
+          <div class="seal-line"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── NEXT VOTE ── -->
+  <div class="next-section">
+    <div class="next-inner">
+
+      <!-- texto -->
+      <div class="next-text fade-in">
+        <p class="section-eyebrow">A seguir</p>
+        <h2 class="next-title">Agora é<br/><em>você</em> quem<br/>decide</h2>
+        <p class="next-body">
+          A partir da próxima partida — Brasil contra o Haiti — a votação popular
+          está aberta. Assista ao jogo, forme sua opinião e venha eleger o
+          próximo Bagre de Ouro.
+        </p>
+
+        <div class="next-meta">
+          <div class="meta-row">
+            <span class="meta-label">Partida</span>
+            <span class="meta-value">Brasil × Haiti</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Rodada</span>
+            <span class="meta-value">2ª Rodada — Copa 2026</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Votação</span>
+            <span class="meta-value">Abre após o apito final</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Eleitor</span>
+            <span class="meta-value">A torcida brasileira</span>
+          </div>
+        </div>
+
+        <button class="vote-btn" disabled>
+          <span class="vote-btn-dot"></span>
+          Votação ainda não disponível
+        </button>
+      </div>
+
+      <!-- foto da partida -->
+      <div class="match-photo-slot fade-in">
+        <!-- ↓ FOTO DA PARTIDA: preencha o src com o caminho da sua imagem -->
+        <img src="" alt="Brasil vs Haiti" class="match-img" />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-brand">Bagre de Ouro</div>
+    <p class="footer-legal">
+      Site independente · Sem vínculo com CBF ou FIFA<br/>
+      Copa do Mundo 2026
+    </p>
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
